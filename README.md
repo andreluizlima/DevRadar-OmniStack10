@@ -1,7 +1,7 @@
 # DevRadar-OmniStack10
 Projeto da semana de prática OmniStack10
-#Backend
+# Backend
 Node.js
 
-#Frontend
+# Frontend
 React
