@@ -39,13 +39,14 @@ li.dev-item header .user-info{
 .user-info strong{
     display: block;
     font-size: 16px;
-    color: #444;    
+    color: #333;    
 }
 
 .user-info span{
     font-size: 14px;
-    color: #666;
-    margin-top: 2px;
+    color: #999;
+	margin-top: 2px;
+	display: block;
 }
 
 li.dev-item p{

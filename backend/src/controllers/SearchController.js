@@ -20,8 +20,8 @@ module.exports = {
                     $maxDistance: 10000,
                 },
             },
-        });
-
+		});
+		
         return response.json(devs);
     }
 }

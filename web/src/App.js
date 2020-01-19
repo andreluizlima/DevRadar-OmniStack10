@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import api from './services/api';
+import DevItem from './components/DevItem';
+import DevForm from './components/DevForm';
+
 import './global.css';
 import './App.css';
 import './Sidebar.css';
@@ -9,99 +13,43 @@ import './Main.css';
 //Estado: Informações mantidas pelo componente (lembrar da imutabilidade, sempre recria a const)
 
 function App() {
-  return (
-    <div id="app">
-      <aside>
-        <strong>Sign-Up</strong>
-        <form>
+	const [devs, setDevs] = useState([]);
 
-          <div className="input-block">
-            <label htmlFor="github_username">Git Username</label>
-            <input type="text" name="github_username" id="github_username" required/>
-          </div>
+	useEffect(() => {
+		async function loadDevs() {
+			const response = await api.get('/devs');
+			setDevs(response.data);
+		}
+		loadDevs();
+	}, []);
 
-          <div className="input-block">
-            <label htmlFor="techs">Techs</label>
-            <input type="text" name="techs" id="techs" required/>
-          </div>
+	async function handleAddDev(data) {
+		const response = await api.post('/devs', data);
 
-          <div className="input-group">
-            <div className="input-block">
-              <label htmlFor="longitude">Longitude</label>
-              <input type="text" name="longitude" id="longitude" required/>
-            </div>
-            <div className="input-block">
-              <label htmlFor="latitude">Latitude</label>
-              <input type="text" name="latitude" id="latitude" required/>
-            </div>
+		console.log(response.data);
 
-          </div>
+		setDevs([...devs, response.data]);
+	}
 
-          <button type="submit">Submit</button>
-        </form>
-      </aside>
-      
-      <main>
-        <ul>
-        <li className = "dev-item">
-            <header>
-              <img src="https://scontent.fbfh1-2.fna.fbcdn.net/v/t1.0-9/82535732_2514864655288786_9100995254516973568_n.jpg?_nc_cat=107&_nc_ohc=o4CMeJmlw1gAX86eOS8&_nc_ht=scontent.fbfh1-2.fna&oh=8465736f0ff0f7fe19c80a5692b47c44&oe=5E948B24" alt="André Luiz Lima"/>
-              <div className="user-info">
-                <strong>André Luiz Lima</strong>
-                <span>Flutter, Java, Java EE, React, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            </p>
-            <a href="https://github.com/andreluizlima">Acessar perfil no GitHub</a>
-          </li>
+	return (
+		<div id="app">
+			<aside>
+				<strong>Sign-Up</strong>
 
-          <li className = "dev-item">
-            <header>
-              <img src="https://scontent.fbfh1-2.fna.fbcdn.net/v/t1.0-9/82535732_2514864655288786_9100995254516973568_n.jpg?_nc_cat=107&_nc_ohc=o4CMeJmlw1gAX86eOS8&_nc_ht=scontent.fbfh1-2.fna&oh=8465736f0ff0f7fe19c80a5692b47c44&oe=5E948B24" alt="André Luiz Lima"/>
-              <div className="user-info">
-                <strong>André Luiz Lima</strong>
-                <span>Flutter, Java, Java EE, React, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            </p>
-            <a href="https://github.com/andreluizlima">Acessar perfil no GitHub</a>
-          </li>
+				<DevForm onSubmit={handleAddDev}/>
 
-          <li className = "dev-item">
-            <header>
-              <img src="https://scontent.fbfh1-2.fna.fbcdn.net/v/t1.0-9/82535732_2514864655288786_9100995254516973568_n.jpg?_nc_cat=107&_nc_ohc=o4CMeJmlw1gAX86eOS8&_nc_ht=scontent.fbfh1-2.fna&oh=8465736f0ff0f7fe19c80a5692b47c44&oe=5E948B24" alt="André Luiz Lima"/>
-              <div className="user-info">
-                <strong>André Luiz Lima</strong>
-                <span>Flutter, Java, Java EE, React, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            </p>
-            <a href="https://github.com/andreluizlima">Acessar perfil no GitHub</a>
-          </li>
+			</aside>
 
-          <li className = "dev-item">
-            <header>
-              <img src="https://scontent.fbfh1-2.fna.fbcdn.net/v/t1.0-9/82535732_2514864655288786_9100995254516973568_n.jpg?_nc_cat=107&_nc_ohc=o4CMeJmlw1gAX86eOS8&_nc_ht=scontent.fbfh1-2.fna&oh=8465736f0ff0f7fe19c80a5692b47c44&oe=5E948B24" alt="André Luiz Lima"/>
-              <div className="user-info">
-                <strong>André Luiz Lima</strong>
-                <span>Flutter, Java, Java EE, React, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            </p>
-            <a href="https://github.com/andreluizlima">Acessar perfil no GitHub</a>
-          </li>
-        </ul>
-      </main>
-    </div>
-  );
+			<main>
+				<ul>
+					{devs.map(dev => (
+						<DevItem key={dev._id} dev={dev}/>
+					))}
+					
+				</ul>
+			</main>
+		</div>
+	);
 }
 
 export default App;
