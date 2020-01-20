@@ -1,7 +1,10 @@
 import axios from 'axios';
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const api = axios.create({
-	baseURL: 'http://192.168.0.11:3333'
+	baseURL: process.env.IP_SERVIDOR
 });
 
 export default api;

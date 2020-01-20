@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const routes = require('./routes');
 const http = require('http');
+const dotenv = require('dotenv');
 
 const { setupWebSocket } = require('./websocket')
 
@@ -11,7 +12,10 @@ const server  = http.Server(app);
 
 setupWebSocket(server);
 
-mongoose.connect('mongodb+srv://andre:andre123@cluster0-z2gjz.mongodb.net/omnistack10?retryWrites=true&w=majority', {
+dotenv.config();
+
+console.log(process.env.CONEXAO_DB);
+mongoose.connect(process.env.CONEXAO_DB, {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true,
